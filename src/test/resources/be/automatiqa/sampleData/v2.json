@@ -1,0 +1,23 @@
+{
+  "testCaseName": "My second fake test",
+  "testCaseTags": [
+    "@myAwesomeFeature",
+    "@myTag",
+    "@mySecondTag"
+  ],
+  "testCaseStartTimestamp": 1614187677,
+  "testCaseEndTimestamp": 1614187677,
+  "testCaseDuration": 10,
+  "stepDuration": [{
+    "id": "55226f8f-9e9e-4d2e-88b1-2de9648b778b",
+    "duration": 3
+  },
+    {
+      "id": "261ea8d9-47a0-4206-8341-b5e08c509568",
+      "duration": 3
+    },
+    {
+      "id": "1ff30163-18a3-437b-acee-22f6ccb746ca",
+      "duration": 4
+    }]
+}
