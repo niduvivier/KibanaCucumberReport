@@ -1,12 +1,9 @@
 package be.automatiqa.plugin;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-@NoArgsConstructor @AllArgsConstructor
-@Getter @Setter
+@Builder
+@Getter
 public class StepReport {
     private String name;
     private Long duration;
