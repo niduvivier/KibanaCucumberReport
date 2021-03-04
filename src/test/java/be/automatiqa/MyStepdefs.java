@@ -3,6 +3,7 @@ package be.automatiqa;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.junit.Assert;
 
 public class MyStepdefs {
     @Given("a fake setup")
@@ -15,5 +16,11 @@ public class MyStepdefs {
 
     @Then("the result should be fake")
     public void theResultShouldBeFake() {
+        Assert.assertNotNull(null);
+    }
+
+    @Given("another fake setup")
+    public void anotherFakeSetup() throws Exception {
+        throw new Exception();
     }
 }
