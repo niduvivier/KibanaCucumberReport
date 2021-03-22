@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>be.automatiqa</groupId>
-    <artifactId>KibanaTestReport</artifactId>
+    <artifactId>kibana-test-report</artifactId>
     <version>1.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
@@ -20,7 +20,7 @@
         <repository>
             <id>github</id>
             <name>GitHub Apache Maven Packages</name>
-            <url>https://maven.pkg.github.com/niduvivier/kibana-cucumber-report</url>
+            <url>https://maven.pkg.github.com/niduvivier/KibanaCucumberReport</url>
         </repository>
     </distributionManagement>
 
