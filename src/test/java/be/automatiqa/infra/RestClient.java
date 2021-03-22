@@ -1,6 +1,9 @@
 package be.automatiqa.infra;
 
 import be.automatiqa.plugin.CucumberReport;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -8,6 +11,8 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.LinkedHashMap;
 
 public class RestClient {
 
@@ -43,6 +48,22 @@ public class RestClient {
 
     public void postReportToELK(CucumberReport cucumberReport){
         doPost(elkUri + "/cucumber-report/message", cucumberReport, Object.class);
+    }
+
+
+    public Double getLastExecutionId(){
+        String jsonString = "{ \"aggs\": {\"maxId\": { \"max\": { \"field\": \"executionId\" } } } }";
+        JSONParser parser = new JSONParser();
+        JSONObject object = null;
+        try {
+            object = (JSONObject)parser.parse(jsonString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        JSONObject result = doPost(elkUri + "/cucumber-report/_search?size=0", object, JSONObject.class);
+        @SuppressWarnings("unchecked")
+        Double id = (Double)((LinkedHashMap<String, Object>)((LinkedHashMap<String, Object>)result.get("aggregations")).get("maxId")).get("value");
+        return id;
     }
 
 

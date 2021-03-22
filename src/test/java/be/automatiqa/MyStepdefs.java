@@ -11,7 +11,8 @@ public class MyStepdefs {
     }
 
     @When("faking a step")
-    public void fakingAStep() {
+    public void fakingAStep() throws InterruptedException {
+        Thread.sleep(1000);
     }
 
     @Then("the result should be fake")

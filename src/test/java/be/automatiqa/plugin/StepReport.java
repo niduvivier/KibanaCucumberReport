@@ -6,5 +6,6 @@ import lombok.*;
 @Getter
 public class StepReport {
     private String name;
+    private String status;
     private Long duration;
 }

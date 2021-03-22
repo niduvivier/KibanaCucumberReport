@@ -4,9 +4,10 @@ import be.automatiqa.infra.RestClient;
 import io.cucumber.plugin.ConcurrentEventListener;
 import io.cucumber.plugin.event.*;
 import java.sql.Timestamp;
-import java.util.*;
 
 public class CustomCucumberLogger implements ConcurrentEventListener {
+    private Double executionId;
+
     private RestClient restClient;
 
     private CucumberReport cucumberReport;
@@ -15,8 +16,7 @@ public class CustomCucumberLogger implements ConcurrentEventListener {
     private StepReport.StepReportBuilder stepReportBuilder;
 
     private Timestamp testCaseStartTimestamp;
-    private Map<UUID, Timestamp> stepStartTimestamps = new HashMap<>();
-    private Map<UUID, Timestamp> stepEndTimestamps = new HashMap<>();
+    private Timestamp stepStartTimestamp;
 
     @Override
     public void setEventPublisher(EventPublisher eventPublisher) {
@@ -28,9 +28,13 @@ public class CustomCucumberLogger implements ConcurrentEventListener {
     }
 
     private void setUpTestCaseInfos(TestCaseStarted event){
+        if(executionId == null){
+            executionId = restClient.getLastExecutionId() + 1;
+        }
         cucumberReportBuilder = CucumberReport.builder()
                 .testCaseName(event.getTestCase().getName())
-                .testCaseTags(event.getTestCase().getTags());
+                .testCaseTags(event.getTestCase().getTags())
+                .executionId(executionId);
         testCaseStartTimestamp = Timestamp.from(event.getInstant());
     }
 
@@ -40,6 +44,7 @@ public class CustomCucumberLogger implements ConcurrentEventListener {
                 .errorMessage(event.getResult().getError() != null ?
                         event.getResult().getError().toString() : null)
                 .testCaseDuration(testCaseEndTimestamp.getTime() - testCaseStartTimestamp.getTime())
+                .status(event.getResult().getStatus().name())
                 .build();
         restClient.postReportToELK(cucumberReport);
     }
@@ -50,12 +55,15 @@ public class CustomCucumberLogger implements ConcurrentEventListener {
             stepReportBuilder = StepReport.builder()
                     .name(pickleStep.getStep().getText());
         }
-        stepStartTimestamps.put(event.getTestStep().getId(), Timestamp.from(event.getInstant()));
+        stepStartTimestamp = Timestamp.from(event.getInstant());
     }
 
     private void addStepEndTimestamp(TestStepFinished event){
-        cucumberReportBuilder.stepReport(stepReportBuilder.duration(10L).build());
-        stepEndTimestamps.put(event.getTestStep().getId(), Timestamp.from(event.getInstant()));
+        Timestamp stepEndTimestamp = Timestamp.from(event.getInstant());
+        cucumberReportBuilder.stepReport(stepReportBuilder
+                .duration(stepEndTimestamp.getTime() - stepStartTimestamp.getTime())
+                .status(event.getResult().getStatus().name())
+                .build());
     }
 
     public String toString(){
@@ -65,9 +73,6 @@ public class CustomCucumberLogger implements ConcurrentEventListener {
             for (String tag : cucumberReport.getTestCaseTags()){
                 result.append(String.format("%s ", tag));
             }
-        }
-        for (UUID uuid:stepEndTimestamps.keySet()){
-            result.append(String.format("\nStep %s start: %s", uuid, stepStartTimestamps.get(uuid)));
         }
         result.append("\nScenario end: ");
         return result.toString();
