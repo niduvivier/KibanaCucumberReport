@@ -11,3 +11,8 @@ Feature: My test Feature
     Given another fake setup
     When faking a step
     Then the result should be fake
+
+  Scenario: A passing test
+    Given a fake setup
+    When faking a step
+    Then the result should be correct

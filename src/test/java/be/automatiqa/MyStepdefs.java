@@ -17,11 +17,16 @@ public class MyStepdefs {
 
     @Then("the result should be fake")
     public void theResultShouldBeFake() {
-        Assert.assertNotNull(null);
+        Assert.assertNotNull("This should not be null", null);
     }
 
     @Given("another fake setup")
     public void anotherFakeSetup() throws Exception {
         throw new Exception();
+    }
+
+    @Then("the result should be correct")
+    public void theResultShouldBeCorrect() {
+        Assert.assertTrue(true);
     }
 }

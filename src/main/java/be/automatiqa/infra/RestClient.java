@@ -1,14 +1,13 @@
 package be.automatiqa.infra;
 
 import be.automatiqa.plugin.CucumberReport;
+import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import org.json.simple.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.*;
-import org.springframework.stereotype.Component;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
@@ -16,9 +15,9 @@ import java.util.LinkedHashMap;
 
 public class RestClient {
 
-    private RestTemplate restTemplate;
+    private final RestTemplate restTemplate;
 
-    private String elkUri = "http://localhost:9200";
+    private final String elkUri = "http://localhost:9200";
 
     public RestClient(){
         restTemplate = new RestTemplate();

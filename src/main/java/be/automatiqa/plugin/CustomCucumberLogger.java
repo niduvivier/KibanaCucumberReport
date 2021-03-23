@@ -41,8 +41,10 @@ public class CustomCucumberLogger implements ConcurrentEventListener {
     private void finalizeTestCaseInfo(TestCaseFinished event){
         Timestamp testCaseEndTimestamp = Timestamp.from(event.getInstant());
         cucumberReport = cucumberReportBuilder
+                .errorType(event.getResult().getError() != null ?
+                        event.getResult().getError().getClass().toString() : null)
                 .errorMessage(event.getResult().getError() != null ?
-                        event.getResult().getError().toString() : null)
+                        event.getResult().getError().getMessage() : null)
                 .testCaseDuration(testCaseEndTimestamp.getTime() - testCaseStartTimestamp.getTime())
                 .status(event.getResult().getStatus().name())
                 .build();

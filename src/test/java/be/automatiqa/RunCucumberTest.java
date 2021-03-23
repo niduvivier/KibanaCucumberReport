@@ -7,7 +7,6 @@ import org.junit.runner.RunWith;
 
 @RunWith(Cucumber.class)
 @CucumberOptions(
-        plugin = {"html:target/html",
-                "be.automatiqa.plugin.CustomCucumberLogger"})
+        plugin = {"be.automatiqa.plugin.CustomCucumberLogger"})
 public class RunCucumberTest {
 }

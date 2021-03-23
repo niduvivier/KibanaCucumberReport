@@ -9,10 +9,11 @@ import java.util.List;
 public class CucumberReport {
     @Setter
     private Double executionId;
-    private String testCaseName;
-    private String status;
-    private Long testCaseDuration;
-    private List<String> testCaseTags;
-    private String errorMessage;
-    private @Singular List<StepReport> stepReports;
+    private final String testCaseName;
+    private final String status;
+    private final Long testCaseDuration;
+    private final List<String> testCaseTags;
+    private final String errorType;
+    private final String errorMessage;
+    private @Singular final List<StepReport> stepReports;
 }
